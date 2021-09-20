@@ -21,7 +21,9 @@ const arrayText = [
 
 //создает блок и стиль текста
 function setBlock(id_context, css_style) {
-  createContext(id_context);
+  if (hasContext(id_context) === false) {
+    createContext(id_context);
+  }
   setContextStyle(id_context, css_style);
 }
 
@@ -42,11 +44,12 @@ function showShotText(id_context, textArray, index) {
 }
 
 //показывает "анимацию печати" текста
-function showPlayText(callback, delay, id_context, textArray, index) {
+function showPlayText(callback, delay, id_context, textArray, cssStyle, index) {
   if (textArray[index] === undefined) return;
+  setBlock(id_context, cssStyle);
   showShotText(id_context, textArray, index);
   index++;
-  setTimeout(callback, delay, callback, delay, id_context, textArray, index);
+  setTimeout(callback, delay, callback, delay, id_context, textArray, cssStyle, index);
 }
 
 //запуск массива анимаций
@@ -59,7 +62,6 @@ function showAnimation(arrayConfig) {
     const id = arrayConfig[i][3];
     const cssStyle = arrayConfig[i][4];
 
-    setBlock(id, cssStyle);
-    setTimeout(showPlayText, delayBlock, showPlayText, delayShot, id, textArray, defaultIndex);
+    setTimeout(showPlayText, delayBlock, showPlayText, delayShot, id, textArray, cssStyle, defaultIndex);
   }
 }
